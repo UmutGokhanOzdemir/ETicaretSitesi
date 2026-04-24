@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import Gravatar from 'react-gravatar'
 import {
   Search, ShoppingCart, User, Menu, X,
   Phone, Mail, Heart
@@ -8,13 +9,26 @@ import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa'
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [user, setUser] = useState(() => {
+    const stored = localStorage.getItem('user')
+    try {
+      return stored ? JSON.parse(stored) : null
+    } catch {
+      return null
+    }
+  })
+
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    setUser(null)
+  }
 
   return (
     <header className="flex flex-col">
       {/* ÜST BAR — sadece desktop */}
       <div className="hidden md:flex bg-dark text-white text-sm py-2 px-6">
         <div className="flex justify-between items-center w-full max-w-[1440px] mx-auto">
-          {/* Sol: telefon + email */}
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1">
               <Phone size={16} /> (225) 555-0118
@@ -24,10 +38,8 @@ function Header() {
             </span>
           </div>
 
-          {/* Orta: slogan */}
           <p className="font-bold">Follow Us and get a chance to win 80% off</p>
 
-          {/* Sağ: sosyal medya placeholder */}
           <div className="flex items-center gap-2">
             <span className="font-bold">Follow Us :</span>
             <FaInstagram size={16} />
@@ -40,12 +52,10 @@ function Header() {
 
       {/* ANA NAV BAR */}
       <div className="bg-white flex justify-between items-center px-4 md:px-6 py-4 md:py-0 md:h-[58px]">
-        {/* Logo */}
         <Link to="/" className="text-2xl font-bold text-dark">
           Bandage
         </Link>
 
-        {/* Desktop menü */}
         <nav className="hidden md:flex items-center gap-4 text-text text-sm font-bold">
           <Link to="/" className="hover:text-dark">Home</Link>
           <Link to="/shop" className="hover:text-dark text-dark">Shop</Link>
@@ -56,11 +66,30 @@ function Header() {
           <Link to="/pages" className="hover:text-dark">Pages</Link>
         </nav>
 
-        {/* Desktop sağ ikonlar */}
         <div className="hidden md:flex items-center gap-4 text-primary text-sm font-bold">
-          <Link to="/login" className="flex items-center gap-1">
-            <User size={16} /> Login / Register
-          </Link>
+          {user ? (
+            <div className="flex items-center gap-2">
+              <Gravatar
+                email={user.email || ''}
+                size={30}
+                default="mp"
+                className="rounded-full"
+              />
+              <span className="text-primary font-bold text-sm">
+                {user.name || user.email}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="text-text hover:text-dark"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <Link to="/login" className="flex items-center gap-1">
+              <User size={16} /> Login / Register
+            </Link>
+          )}
           <Search size={16} />
           <span className="flex items-center gap-1">
             <ShoppingCart size={16} /> 1
@@ -70,7 +99,6 @@ function Header() {
           </span>
         </div>
 
-        {/* Mobile ikonlar */}
         <div className="flex md:hidden items-center gap-4 text-dark">
           <Search size={24} />
           <ShoppingCart size={24} />
@@ -91,6 +119,34 @@ function Header() {
           <Link to="/about" onClick={() => setIsMenuOpen(false)}>About</Link>
           <Link to="/team" onClick={() => setIsMenuOpen(false)}>Team</Link>
           <Link to="/contact" onClick={() => setIsMenuOpen(false)}>Contact</Link>
+          {user ? (
+            <>
+              <div className="flex items-center gap-2 text-base">
+                <Gravatar
+                  email={user.email || ''}
+                  size={30}
+                  default="mp"
+                  className="rounded-full"
+                />
+                <span className="text-primary font-bold">
+                  {user.name || user.email}
+                </span>
+              </div>
+              <button
+                onClick={() => {
+                  handleLogout()
+                  setIsMenuOpen(false)
+                }}
+                className="text-base text-text"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link to="/login" onClick={() => setIsMenuOpen(false)}>
+              Login / Register
+            </Link>
+          )}
         </nav>
       )}
     </header>
