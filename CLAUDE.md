@@ -1,5 +1,17 @@
 # PROJE CONTEXT - E-Ticaret Sitesi (Workintech Bandage)
 
+## ⚠️ GIT COMMIT KURALI (MUTLAK)
+
+Bu projede yapılan HİÇBİR git commit'inde aşağıdakiler BULUNMAYACAK:
+
+1. `Co-Authored-By: Claude ...` satırı (veya herhangi bir Co-Authored-By satırı)
+2. `🤖 Generated with Claude Code` veya benzeri imza/footer
+3. Author/committer override (`--author=...` kullanma). Commit'ler **sadece** kullanıcının lokal `git config user.name` + `user.email`'i ile atılacak.
+
+Commit mesajı sadece konvansiyonel başlık + (gerekirse) kısa açıklama içerir. Başka hiçbir ek satır yok. Bu kural her oturumda geçerlidir — unutma.
+
+---
+
 Bu dosya projenin sabit referansıdır. Her prompt'ta Cursor'a bu dosyayı gösterebilirsin (Cursor'da `@00-CONTEXT.md` olarak).
 
 ---

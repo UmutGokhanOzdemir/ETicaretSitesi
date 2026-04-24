@@ -1,15 +1,13 @@
 import { Switch, Route } from 'react-router-dom'
 import HomePage from '../pages/HomePage'
+import ShopPage from '../pages/ShopPage'
 
 function PageContent() {
   return (
     <main className="flex flex-col">
       <Switch>
         <Route exact path="/" component={HomePage} />
-        {/* İleride eklenecek:
         <Route path="/shop" component={ShopPage} />
-        <Route path="/product/:id" component={ProductDetail} />
-        */}
       </Switch>
     </main>
   )
