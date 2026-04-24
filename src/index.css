@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Montserrat", sans-serif;
+
+  /* Figma Bandage paleti */
+  --color-primary: #23A6F0;
+  --color-secondary: #23856D;
+  --color-success: #2DC071;
+  --color-dark: #252B42;
+  --color-text: #737373;
+  --color-muted: #BDBDBD;
+  --color-alert: #E74040;
+  --color-alert-orange: #E77C40;
+  --color-disabled-blue: #8EC2F2;
+  --color-light: #FAFAFA;
+  --color-border: #E6E6E6;
+  --color-input-bg: #F9F9F9;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-dark);
+  margin: 0;
+}
+
+/* Swiper özelleştirmeleri */
+.hero-swiper .swiper-button-next,
+.hero-swiper .swiper-button-prev {
+  color: white;
+}
+
+.hero-swiper .swiper-pagination-bullet {
+  background: white;
+  opacity: 0.5;
+}
+
+.hero-swiper .swiper-pagination-bullet-active {
+  opacity: 1;
+  width: 30px;
+  border-radius: 5px;
+}
