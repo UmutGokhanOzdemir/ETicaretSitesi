@@ -1,6 +1,11 @@
+import { Link } from 'react-router-dom'
+
 function ProductCard({ product }) {
   return (
-    <div className="flex flex-col bg-white hover:scale-105 transition-transform duration-300 cursor-pointer">
+    <Link
+      to={`/product/${product.id}`}
+      className="flex flex-col bg-white hover:scale-105 transition-transform duration-300"
+    >
       <img
         src={product.image}
         alt={product.title}
@@ -30,7 +35,7 @@ function ProductCard({ product }) {
           ))}
         </div>
       </div>
-    </div>
+    </Link>
   )
 }
 
