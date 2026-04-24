@@ -50,8 +50,9 @@ function Header() {
           <Link to="/" className="hover:text-dark">Home</Link>
           <Link to="/shop" className="hover:text-dark text-dark">Shop</Link>
           <Link to="/about" className="hover:text-dark">About</Link>
-          <Link to="/blog" className="hover:text-dark">Blog</Link>
+          <Link to="/team" className="hover:text-dark">Team</Link>
           <Link to="/contact" className="hover:text-dark">Contact</Link>
+          <Link to="/blog" className="hover:text-dark">Blog</Link>
           <Link to="/pages" className="hover:text-dark">Pages</Link>
         </nav>
 
@@ -86,8 +87,9 @@ function Header() {
       {isMenuOpen && (
         <nav className="flex md:hidden flex-col items-center gap-6 py-8 bg-white text-text text-3xl font-normal">
           <Link to="/" onClick={() => setIsMenuOpen(false)}>Home</Link>
-          <Link to="/product" onClick={() => setIsMenuOpen(false)}>Product</Link>
-          <Link to="/pricing" onClick={() => setIsMenuOpen(false)}>Pricing</Link>
+          <Link to="/shop" onClick={() => setIsMenuOpen(false)}>Shop</Link>
+          <Link to="/about" onClick={() => setIsMenuOpen(false)}>About</Link>
+          <Link to="/team" onClick={() => setIsMenuOpen(false)}>Team</Link>
           <Link to="/contact" onClick={() => setIsMenuOpen(false)}>Contact</Link>
         </nav>
       )}
