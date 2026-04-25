@@ -72,8 +72,6 @@ function HomePage() {
           modules={[Navigation, Pagination, Autoplay]}
           navigation
           pagination={{ clickable: true }}
-          autoplay={{ delay: 5000 }}
-          loop
           className="hero-swiper"
         >
           {/* SLIDE 1 */}
@@ -106,38 +104,6 @@ function HomePage() {
             </div>
           </SwiperSlide>
 
-          {/* SLIDE 2 */}
-          <SwiperSlide>
-            <div className="relative flex flex-col md:flex-row items-center justify-between h-[600px] md:h-[716px] bg-secondary overflow-hidden px-4 md:px-24">
-              {/* Sol: Metin */}
-              <div className="relative z-10 flex flex-col items-center md:items-start text-center md:text-left gap-6 md:gap-8 max-w-[500px] pt-8 md:pt-0">
-                <h4 className="text-white text-xl font-normal">
-                  SUMMER 2020
-                </h4>
-                <h1 className="text-white text-4xl md:text-[58px] font-bold leading-tight md:leading-[80px]">
-                  Vita Classic<br />Product
-                </h1>
-                <p className="text-white text-sm leading-relaxed max-w-[341px]">
-                  We know how large objects will act, We know how are objects will act.
-                </p>
-                <div className="flex flex-col md:flex-row items-center gap-4 md:gap-[34px]">
-                  <span className="text-white text-2xl font-bold">$16.48</span>
-                  <button className="bg-success hover:opacity-90 text-white text-sm font-bold px-[40px] py-[15px] rounded-[5px]">
-                    ADD TO CART
-                  </button>
-                </div>
-              </div>
-
-              {/* Sağ: Görsel - sadece desktop */}
-              <div className="hidden md:block relative z-10 h-full">
-                <img
-                  src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=500&q=80"
-                  alt="Product"
-                  className="h-full object-cover"
-                />
-              </div>
-            </div>
-          </SwiperSlide>
         </Swiper>
       </section>
 
@@ -208,10 +174,41 @@ function HomePage() {
         </div>
       </section>
 
-      {/* BESTSELLER PRODUCTS */}
-      <BestsellerProducts limit={4} />
+      {/* BESTSELLER PRODUCTS — 8 ürün (2 row × 4 col) */}
+      <BestsellerProducts limit={8} />
 
-      {/* YEŞİL CTA BANNER - VITA CLASSIC */}
+      {/* VITA CLASSIC — yeşil promotional section */}
+      <section className="bg-secondary">
+        <div className="flex flex-col md:flex-row items-center justify-between max-w-[1050px] mx-auto px-4 md:px-8 py-16 md:py-28 gap-8">
+          {/* Sol: Metin */}
+          <div className="flex flex-col items-center md:items-start text-center md:text-left gap-6 md:gap-8 max-w-[500px]">
+            <h4 className="text-white text-xl font-normal">SUMMER 2020</h4>
+            <h1 className="text-white text-4xl md:text-[58px] font-bold leading-tight md:leading-[80px]">
+              Vita Classic<br />Product
+            </h1>
+            <p className="text-white text-sm leading-relaxed max-w-[341px]">
+              We know how large objects will act, We know how are objects will act.
+            </p>
+            <div className="flex flex-col md:flex-row items-center gap-4 md:gap-[34px]">
+              <span className="text-white text-2xl font-bold">$16.48</span>
+              <button className="bg-success hover:opacity-90 text-white text-sm font-bold px-[40px] py-[15px] rounded-[5px]">
+                ADD TO CART
+              </button>
+            </div>
+          </div>
+
+          {/* Sağ: Görsel - sadece desktop */}
+          <div className="hidden md:block relative h-[500px]">
+            <img
+              src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=500&q=80"
+              alt="Vita Classic Product"
+              className="h-full object-cover"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* CONTAINER-FLUID — Part of the Neural Universe */}
       <section className="bg-white">
         <div className="flex flex-col md:flex-row w-full">
           {/* Sol: Kadın fotoğrafı */}
