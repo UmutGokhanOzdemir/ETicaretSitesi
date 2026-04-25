@@ -31,8 +31,16 @@ function LoginPage() {
         password: data.password
       })
 
-      if (data.rememberMe && res.data?.token) {
+      // Token'ı her durumda kaydet (axios interceptor için gerekli).
+      // "Remember Me" işaretliyse uzun süreli persist ediyoruz; değilse
+      // sessionStorage'a yazıp tab kapanınca temizliyoruz.
+      if (res.data?.token) {
         localStorage.setItem('token', res.data.token)
+        if (!data.rememberMe) {
+          sessionStorage.setItem('clearTokenOnTabClose', '1')
+        } else {
+          sessionStorage.removeItem('clearTokenOnTabClose')
+        }
       }
 
       localStorage.setItem('user', JSON.stringify(res.data))

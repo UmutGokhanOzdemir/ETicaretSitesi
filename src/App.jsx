@@ -13,6 +13,14 @@ function App() {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    // Yeni tab/oturum açılışında, "Remember Me" işaretsiz login yapılmışsa
+    // önceki oturumdan kalan token'ı temizle.
+    if (sessionStorage.getItem('clearTokenOnTabClose')) {
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+      sessionStorage.removeItem('clearTokenOnTabClose')
+    }
+
     // Bootstrap: localStorage'tan user state'ini Redux'a yükle (refresh sonrası kayıp olmasın)
     try {
       const stored = localStorage.getItem('user')
