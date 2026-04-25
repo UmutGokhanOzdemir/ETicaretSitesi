@@ -1,13 +1,37 @@
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import ProductCard from './ProductCard'
-import mockProducts from '../data/mockProducts'
+import Spinner from './Spinner'
+import {
+  fetchProducts,
+  FETCH_STATES
+} from '../store/actions/productActions'
 
-function BestsellerProducts({ limit = 4, variant = 'home' }) {
+function BestsellerProducts({ limit = 4, variant = 'home', excludeId }) {
+  const dispatch = useDispatch()
   const isDetail = variant === 'detail'
+
+  const { productList, fetchState } = useSelector((s) => s.product)
+
+  useEffect(() => {
+    if (productList.length === 0 && fetchState !== FETCH_STATES.FETCHING) {
+      dispatch(fetchProducts({ limit: 8 }))
+    }
+  }, [dispatch, productList.length, fetchState])
+
+  const items = (excludeId
+    ? productList.filter((p) => String(p.id) !== String(excludeId))
+    : productList
+  ).slice(0, limit)
 
   return (
     <section className={`${isDetail ? 'bg-light' : 'bg-white'} py-20`}>
       <div className="flex flex-col items-center gap-12 px-4 max-w-[1050px] mx-auto">
-        <div className={`flex flex-col items-center gap-2 ${isDetail ? 'w-full' : 'text-center'}`}>
+        <div
+          className={`flex flex-col items-center gap-2 ${
+            isDetail ? 'w-full' : 'text-center'
+          }`}
+        >
           {!isDetail && (
             <p className="text-xl text-text font-normal">Featured Products</p>
           )}
@@ -20,16 +44,26 @@ function BestsellerProducts({ limit = 4, variant = 'home' }) {
           {isDetail && <div className="h-[2px] w-full bg-[#ECECEC] mt-4" />}
         </div>
 
-        <div className="flex flex-col md:flex-row md:flex-wrap gap-8 w-full justify-center">
-          {mockProducts.slice(0, limit).map((product) => (
-            <div
-              key={product.id}
-              className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(25%-1.5rem)]"
-            >
-              <ProductCard product={product} variant={variant} />
-            </div>
-          ))}
-        </div>
+        {fetchState === FETCH_STATES.FETCHING && items.length === 0 && (
+          <Spinner />
+        )}
+
+        {fetchState === FETCH_STATES.FAILED && items.length === 0 && (
+          <p className="text-alert text-center">Ürünler yüklenemedi</p>
+        )}
+
+        {items.length > 0 && (
+          <div className="flex flex-col md:flex-row md:flex-wrap gap-8 w-full justify-center">
+            {items.map((product) => (
+              <div
+                key={product.id}
+                className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(25%-1.5rem)]"
+              >
+                <ProductCard product={product} variant={variant} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )

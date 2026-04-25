@@ -246,7 +246,7 @@ function ProductDetailPage() {
       </section>
 
       {/* D. BESTSELLER PRODUCTS */}
-      <BestsellerProducts limit={8} variant="detail" />
+      <BestsellerProducts limit={8} variant="detail" excludeId={realProductId} />
     </div>
   )
 }
