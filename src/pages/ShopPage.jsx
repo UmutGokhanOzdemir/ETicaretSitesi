@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useParams, useHistory, useLocation } from 'react-router-dom'
-import ReactPaginate from 'react-paginate'
+import ReactPaginateModule from 'react-paginate'
+
+// react-paginate v8 UMD/CJS interop fix (Vite ESM)
+const ReactPaginate = ReactPaginateModule.default || ReactPaginateModule
 import { LayoutGrid, List } from 'lucide-react'
 import CategoryCard from '../components/CategoryCard'
 import ProductCard from '../components/ProductCard'
