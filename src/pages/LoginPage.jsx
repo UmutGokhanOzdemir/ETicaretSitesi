@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useHistory, Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import { Loader2 } from 'lucide-react'
 import axiosInstance from '../api/axiosInstance'
+import { setUser } from '../store/actions/clientActions'
 
 // Test users (password: 12345):
 // customer@commerce.com
@@ -12,6 +14,7 @@ import axiosInstance from '../api/axiosInstance'
 
 function LoginPage() {
   const history = useHistory()
+  const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
 
   const {
@@ -33,6 +36,7 @@ function LoginPage() {
       }
 
       localStorage.setItem('user', JSON.stringify(res.data))
+      dispatch(setUser(res.data))
 
       toast.success('Logged in successfully!')
       history.goBack()
@@ -48,8 +52,8 @@ function LoginPage() {
 
   return (
     <div className="flex flex-col items-center bg-white py-12">
-      <div className="flex flex-col gap-6 w-full max-w-md px-4">
-        <h1 className="text-3xl font-bold text-dark text-center">Login</h1>
+      <div className="flex flex-col gap-6 w-full max-w-[530px] px-4">
+        <h2 className="text-4xl font-bold text-dark text-center">Login</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
@@ -63,7 +67,7 @@ function LoginPage() {
                   message: 'Please enter a valid email'
                 }
               })}
-              className="bg-input-bg border border-border rounded px-4 py-3 text-sm outline-none focus:border-primary"
+              className="bg-input-bg border border-border rounded-[5px] px-[21px] h-[50px] text-sm outline-none focus:border-primary"
             />
             {errors.email && (
               <span className="text-xs text-alert">{errors.email.message}</span>
@@ -75,7 +79,7 @@ function LoginPage() {
             <input
               type="password"
               {...register('password', { required: 'Password is required' })}
-              className="bg-input-bg border border-border rounded px-4 py-3 text-sm outline-none focus:border-primary"
+              className="bg-input-bg border border-border rounded-[5px] px-[21px] h-[50px] text-sm outline-none focus:border-primary"
             />
             {errors.password && (
               <span className="text-xs text-alert">
@@ -96,7 +100,7 @@ function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="flex items-center justify-center gap-2 bg-primary text-white text-sm font-bold rounded px-10 py-3 disabled:opacity-60"
+            className="flex items-center justify-center gap-2 bg-primary text-white text-sm font-bold rounded-[5px] px-[40px] h-[52px] disabled:opacity-60"
           >
             {loading && <Loader2 size={16} className="animate-spin" />}
             {loading ? 'Signing in...' : 'Login'}

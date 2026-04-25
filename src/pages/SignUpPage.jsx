@@ -20,6 +20,7 @@ function SignUpPage() {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors }
   } = useForm({
     defaultValues: { role_id: '' }
@@ -38,14 +39,19 @@ function SignUpPage() {
         if (cancelled) return
         const list = Array.isArray(res.data) ? res.data : FALLBACK_ROLES
         setRoles(list)
+        const customer = list.find((r) => r.code === 'customer')
+        if (customer) setValue('role_id', String(customer.id))
       })
       .catch(() => {
-        if (!cancelled) setRoles(FALLBACK_ROLES)
+        if (cancelled) return
+        setRoles(FALLBACK_ROLES)
+        const customer = FALLBACK_ROLES.find((r) => r.code === 'customer')
+        if (customer) setValue('role_id', String(customer.id))
       })
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [setValue])
 
   const onSubmit = async (data) => {
     setLoading(true)
@@ -83,8 +89,8 @@ function SignUpPage() {
 
   return (
     <div className="flex flex-col items-center bg-white py-12">
-      <div className="flex flex-col gap-6 w-full max-w-md px-4">
-        <h1 className="text-3xl font-bold text-dark text-center">Sign Up</h1>
+      <div className="flex flex-col gap-6 w-full max-w-[530px] px-4">
+        <h2 className="text-4xl font-bold text-dark text-center">Sign Up</h2>
 
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -102,7 +108,7 @@ function SignUpPage() {
                   message: 'Name must be at least 3 characters'
                 }
               })}
-              className="bg-input-bg border border-border rounded px-4 py-3 text-sm outline-none focus:border-primary"
+              className="bg-input-bg border border-border rounded-[5px] px-[21px] h-[50px] text-sm outline-none focus:border-primary"
             />
             {errors.name && (
               <span className="text-xs text-alert">{errors.name.message}</span>
@@ -121,7 +127,7 @@ function SignUpPage() {
                   message: 'Please enter a valid email'
                 }
               })}
-              className="bg-input-bg border border-border rounded px-4 py-3 text-sm outline-none focus:border-primary"
+              className="bg-input-bg border border-border rounded-[5px] px-[21px] h-[50px] text-sm outline-none focus:border-primary"
             />
             {errors.email && (
               <span className="text-xs text-alert">{errors.email.message}</span>
@@ -145,7 +151,7 @@ function SignUpPage() {
                     'Must include uppercase, lowercase, number and special character'
                 }
               })}
-              className="bg-input-bg border border-border rounded px-4 py-3 text-sm outline-none focus:border-primary"
+              className="bg-input-bg border border-border rounded-[5px] px-[21px] h-[50px] text-sm outline-none focus:border-primary"
             />
             {errors.password && (
               <span className="text-xs text-alert">
@@ -166,7 +172,7 @@ function SignUpPage() {
                 validate: (value) =>
                   value === password || 'Passwords do not match'
               })}
-              className="bg-input-bg border border-border rounded px-4 py-3 text-sm outline-none focus:border-primary"
+              className="bg-input-bg border border-border rounded-[5px] px-[21px] h-[50px] text-sm outline-none focus:border-primary"
             />
             {errors.password_confirm && (
               <span className="text-xs text-alert">
@@ -180,7 +186,7 @@ function SignUpPage() {
             <label className="text-sm font-bold text-dark">Role</label>
             <select
               {...register('role_id', { required: 'Role is required' })}
-              className="bg-input-bg border border-border rounded px-4 py-3 text-sm outline-none focus:border-primary"
+              className="bg-input-bg border border-border rounded-[5px] px-[21px] h-[50px] text-sm outline-none focus:border-primary"
             >
               <option value="">Select a role</option>
               {roles.map((role) => (
@@ -198,7 +204,7 @@ function SignUpPage() {
 
           {/* Store fields */}
           {isStore && (
-            <div className="flex flex-col gap-4 p-4 border border-border rounded bg-light">
+            <div className="flex flex-col gap-4 p-4 border border-border rounded-[5px] bg-light">
               <div className="flex flex-col gap-1">
                 <label className="text-sm font-bold text-dark">
                   Store Name
@@ -212,7 +218,7 @@ function SignUpPage() {
                       message: 'Store name must be at least 3 characters'
                     }
                   })}
-                  className="bg-white border border-border rounded px-4 py-3 text-sm outline-none focus:border-primary"
+                  className="bg-white border border-border rounded-[5px] px-[21px] h-[50px] text-sm outline-none focus:border-primary"
                 />
                 {errors.store_name && (
                   <span className="text-xs text-alert">
@@ -235,7 +241,7 @@ function SignUpPage() {
                       message: 'Please enter a valid Turkish phone number'
                     }
                   })}
-                  className="bg-white border border-border rounded px-4 py-3 text-sm outline-none focus:border-primary"
+                  className="bg-white border border-border rounded-[5px] px-[21px] h-[50px] text-sm outline-none focus:border-primary"
                 />
                 {errors.store_phone && (
                   <span className="text-xs text-alert">
@@ -258,7 +264,7 @@ function SignUpPage() {
                       message: 'Tax ID must match format TXXXXVXXXXXX'
                     }
                   })}
-                  className="bg-white border border-border rounded px-4 py-3 text-sm outline-none focus:border-primary"
+                  className="bg-white border border-border rounded-[5px] px-[21px] h-[50px] text-sm outline-none focus:border-primary"
                 />
                 {errors.store_tax_id && (
                   <span className="text-xs text-alert">
@@ -281,7 +287,7 @@ function SignUpPage() {
                       message: 'Please enter a valid Turkish IBAN'
                     }
                   })}
-                  className="bg-white border border-border rounded px-4 py-3 text-sm outline-none focus:border-primary"
+                  className="bg-white border border-border rounded-[5px] px-[21px] h-[50px] text-sm outline-none focus:border-primary"
                 />
                 {errors.store_bank_account && (
                   <span className="text-xs text-alert">
@@ -295,7 +301,7 @@ function SignUpPage() {
           <button
             type="submit"
             disabled={loading}
-            className="flex items-center justify-center gap-2 bg-primary text-white text-sm font-bold rounded px-10 py-3 disabled:opacity-60"
+            className="flex items-center justify-center gap-2 bg-primary text-white text-sm font-bold rounded-[5px] px-[40px] h-[52px] disabled:opacity-60"
           >
             {loading && <Loader2 size={16} className="animate-spin" />}
             {loading ? 'Submitting...' : 'Sign Up'}

@@ -16,6 +16,8 @@
   --color-light: #FAFAFA;
   --color-border: #E6E6E6;
   --color-input-bg: #F9F9F9;
+  --color-star: #F3CD03;
+  --color-select-border: #DDDDDD;
 }
 
 body {
@@ -33,10 +35,12 @@ body {
 .hero-swiper .swiper-pagination-bullet {
   background: white;
   opacity: 0.5;
+  width: 63px;
+  height: 10px;
+  border-radius: 0;
 }
 
 .hero-swiper .swiper-pagination-bullet-active {
   opacity: 1;
-  width: 30px;
-  border-radius: 5px;
+  width: 62px;
 }

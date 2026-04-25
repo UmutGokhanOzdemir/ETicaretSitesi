@@ -1,10 +1,20 @@
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination, Autoplay } from 'swiper/modules'
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import BlogCard from '../components/BlogCard'
 import BestsellerProducts from '../components/BestsellerProducts'
+import { slugify } from '../utils/slugify'
+
+const FALLBACK_PICKS = [
+  { title: 'MEN', image: 'https://images.unsplash.com/photo-1516257984-b1b4d707412e?w=600&q=80' },
+  { title: 'WOMEN', image: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=400&q=80' },
+  { title: 'ACCESSORIES', image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400&q=80' },
+  { title: 'KIDS', image: 'https://images.unsplash.com/photo-1503944583220-79d8926ad5e2?w=400&q=80' }
+]
 
 const posts = [
   {
@@ -34,6 +44,26 @@ const posts = [
 ]
 
 function HomePage() {
+  const categories = useSelector((s) => s.product.categories)
+  const topCategories = [...categories]
+    .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+    .slice(0, 5)
+
+  const picks = topCategories.length >= 4
+    ? topCategories.slice(0, 4).map((c) => ({
+        title: (c.title || c.code || '').toUpperCase(),
+        image: c.img || c.image,
+        gender: c.gender,
+        slug: slugify(c.title || c.code || ''),
+        id: c.id
+      }))
+    : FALLBACK_PICKS
+
+  const linkFor = (p) =>
+    p.id
+      ? `/shop/${p.gender === 'k' ? 'kadin' : 'erkek'}/${p.slug}/${p.id}`
+      : '/shop'
+
   return (
     <div className="flex flex-col">
       {/* HERO SLIDER */}
@@ -69,7 +99,7 @@ function HomePage() {
                   We know how large objects will act,<br />
                   but things on a small scale.
                 </p>
-                <button className="bg-success hover:opacity-90 text-white text-xl font-bold px-10 py-4 rounded-md">
+                <button className="bg-success hover:opacity-90 text-white text-2xl font-bold px-[40px] py-[15px] rounded-[5px]">
                   SHOP NOW
                 </button>
               </div>
@@ -81,18 +111,18 @@ function HomePage() {
             <div className="relative flex flex-col md:flex-row items-center justify-between h-[600px] md:h-[716px] bg-secondary overflow-hidden px-4 md:px-24">
               {/* Sol: Metin */}
               <div className="relative z-10 flex flex-col items-center md:items-start text-center md:text-left gap-6 md:gap-8 max-w-[500px] pt-8 md:pt-0">
-                <h5 className="text-white text-base md:text-xl font-normal">
+                <h4 className="text-white text-xl font-normal">
                   SUMMER 2020
-                </h5>
+                </h4>
                 <h1 className="text-white text-4xl md:text-[58px] font-bold leading-tight md:leading-[80px]">
                   Vita Classic<br />Product
                 </h1>
-                <p className="text-white text-sm md:text-base leading-relaxed max-w-sm">
+                <p className="text-white text-sm leading-relaxed max-w-[341px]">
                   We know how large objects will act, We know how are objects will act.
                 </p>
-                <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
+                <div className="flex flex-col md:flex-row items-center gap-4 md:gap-[34px]">
                   <span className="text-white text-2xl font-bold">$16.48</span>
-                  <button className="bg-success hover:opacity-90 text-white text-sm font-bold px-10 py-4 rounded-md">
+                  <button className="bg-success hover:opacity-90 text-white text-sm font-bold px-[40px] py-[15px] rounded-[5px]">
                     ADD TO CART
                   </button>
                 </div>
@@ -125,62 +155,53 @@ function HomePage() {
 
           {/* Kartlar grid */}
           <div className="flex flex-col md:flex-row gap-8 w-full">
-
-            {/* Büyük kart - MEN */}
-            <div
+            {/* Büyük kart */}
+            <Link
+              to={linkFor(picks[0])}
               className="relative h-[500px] md:flex-[2] bg-cover bg-center group cursor-pointer overflow-hidden"
-              style={{
-                backgroundImage: "url('https://images.unsplash.com/photo-1516257984-b1b4d707412e?w=600&q=80')"
-              }}
+              style={{ backgroundImage: `url('${picks[0].image}')` }}
             >
               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors"></div>
               <div className="absolute bottom-6 left-8 bg-white px-8 py-3">
-                <h3 className="text-dark font-bold text-base">MEN</h3>
+                <h3 className="text-dark font-bold text-base">{picks[0].title}</h3>
               </div>
-            </div>
+            </Link>
 
-            {/* Orta tall kart - WOMEN */}
-            <div
+            {/* Orta */}
+            <Link
+              to={linkFor(picks[1])}
               className="relative h-[500px] md:flex-1 bg-cover bg-center group cursor-pointer overflow-hidden"
-              style={{
-                backgroundImage: "url('https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=400&q=80')"
-              }}
+              style={{ backgroundImage: `url('${picks[1].image}')` }}
             >
               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors"></div>
               <div className="absolute bottom-5 left-1/2 -translate-x-1/2 bg-white px-10 py-3">
-                <h3 className="text-dark font-bold text-base">WOMEN</h3>
+                <h3 className="text-dark font-bold text-base">{picks[1].title}</h3>
               </div>
-            </div>
+            </Link>
 
-            {/* Sağ: 2 küçük kart üst üste */}
+            {/* Sağ: 2 küçük kart */}
             <div className="flex flex-col gap-4 md:flex-1">
-
-              {/* ACCESSORIES */}
-              <div
+              <Link
+                to={linkFor(picks[2])}
                 className="relative h-[242px] bg-cover bg-center group cursor-pointer overflow-hidden"
-                style={{
-                  backgroundImage: "url('https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400&q=80')"
-                }}
+                style={{ backgroundImage: `url('${picks[2].image}')` }}
               >
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors"></div>
                 <div className="absolute bottom-5 left-4 bg-white px-6 py-3">
-                  <h3 className="text-dark font-bold text-base">ACCESSORIES</h3>
+                  <h3 className="text-dark font-bold text-base">{picks[2].title}</h3>
                 </div>
-              </div>
+              </Link>
 
-              {/* KIDS */}
-              <div
+              <Link
+                to={linkFor(picks[3])}
                 className="relative h-[242px] bg-cover bg-center group cursor-pointer overflow-hidden"
-                style={{
-                  backgroundImage: "url('https://images.unsplash.com/photo-1503944583220-79d8926ad5e2?w=400&q=80')"
-                }}
+                style={{ backgroundImage: `url('${picks[3].image}')` }}
               >
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors"></div>
                 <div className="absolute bottom-5 left-8 bg-white px-10 py-3">
-                  <h3 className="text-dark font-bold text-base">KIDS</h3>
+                  <h3 className="text-dark font-bold text-base">{picks[3].title}</h3>
                 </div>
-              </div>
-
+              </Link>
             </div>
           </div>
 
@@ -202,19 +223,19 @@ function HomePage() {
           />
 
           {/* Sağ: Metin bloğu */}
-          <div className="w-full md:w-1/2 bg-success flex flex-col justify-center items-start gap-6 px-8 md:px-20 py-16 md:py-0">
-            <p className="text-sm text-muted font-bold tracking-wider">SUMMER 2020</p>
-            <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
-              Part of the Urban<br />oddities 2020
+          <div className="w-full md:w-1/2 bg-white flex flex-col justify-center items-start gap-[30px] px-8 md:px-20 py-16 md:py-0">
+            <h5 className="text-base text-muted font-bold tracking-wider">SUMMER 2020</h5>
+            <h2 className="text-4xl md:text-[40px] font-bold text-dark leading-tight md:leading-[50px]">
+              Part of the Neural<br />Universe
             </h2>
-            <p className="text-white text-base max-w-md">
+            <p className="text-text text-xl font-normal leading-[30px] max-w-md">
               We know how large objects will act, but things on a small scale.
             </p>
-            <div className="flex items-center gap-4">
-              <button className="bg-success hover:opacity-90 text-white text-sm font-bold px-8 py-3 rounded border border-white">
+            <div className="flex items-center gap-[10px]">
+              <button className="bg-success hover:opacity-90 text-white text-sm font-bold px-[40px] py-[15px] rounded-[5px]">
                 BUY NOW
               </button>
-              <button className="border border-white text-white hover:bg-white hover:text-success transition-colors text-sm font-bold px-8 py-3 rounded">
+              <button className="border border-success text-success hover:bg-success hover:text-white transition-colors text-sm font-bold px-[40px] py-[15px] rounded-[5px]">
                 READ MORE
               </button>
             </div>

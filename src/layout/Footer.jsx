@@ -4,13 +4,13 @@ import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa'
 function Footer() {
   return (
     <footer className="flex flex-col">
-      {/* BÖLÜM 1 — ÜST */}
+      {/* BÖLÜM 1 — ÜST (Logo + Social) */}
       <div className="bg-light">
         <div className="flex flex-col md:flex-row items-center md:justify-between gap-4 max-w-[1050px] mx-auto px-4 py-10">
           <Link to="/" className="text-2xl font-bold text-dark">
             Bandage
           </Link>
-          <div className="flex items-center gap-4 text-primary">
+          <div className="flex items-center gap-5 text-primary">
             <FaFacebook size={24} />
             <FaInstagram size={24} />
             <FaTwitter size={24} />
@@ -18,13 +18,16 @@ function Footer() {
         </div>
       </div>
 
-      {/* BÖLÜM 2 — ORTA */}
+      {/* HR DIVIDER */}
+      <div className="border-t border-border" />
+
+      {/* BÖLÜM 2 — ORTA (Linkler + Subscribe) */}
       <div className="bg-white">
-        <div className="flex flex-col md:flex-row gap-8 max-w-[1050px] mx-auto px-4 py-12">
+        <div className="flex flex-col md:flex-row gap-8 max-w-[1050px] mx-auto px-4 py-[50px]">
           {/* Company Info */}
-          <div className="flex flex-col gap-4 md:flex-1">
-            <h4 className="text-base font-bold text-dark">Company Info</h4>
-            <div className="flex flex-col gap-2 text-sm font-bold text-text">
+          <div className="flex flex-col gap-5 md:flex-1">
+            <h5 className="text-base font-bold text-dark">Company Info</h5>
+            <div className="flex flex-col gap-[10px] text-sm font-bold text-text">
               <Link to="/about">About Us</Link>
               <Link to="/carrier">Carrier</Link>
               <Link to="/hiring">We are hiring</Link>
@@ -33,9 +36,9 @@ function Footer() {
           </div>
 
           {/* Legal */}
-          <div className="flex flex-col gap-4 md:flex-1">
-            <h4 className="text-base font-bold text-dark">Legal</h4>
-            <div className="flex flex-col gap-2 text-sm font-bold text-text">
+          <div className="flex flex-col gap-5 md:flex-1">
+            <h5 className="text-base font-bold text-dark">Legal</h5>
+            <div className="flex flex-col gap-[10px] text-sm font-bold text-text">
               <Link to="/about">About Us</Link>
               <Link to="/carrier">Carrier</Link>
               <Link to="/hiring">We are hiring</Link>
@@ -44,9 +47,9 @@ function Footer() {
           </div>
 
           {/* Features */}
-          <div className="flex flex-col gap-4 md:flex-1">
-            <h4 className="text-base font-bold text-dark">Features</h4>
-            <div className="flex flex-col gap-2 text-sm font-bold text-text">
+          <div className="flex flex-col gap-5 md:flex-1">
+            <h5 className="text-base font-bold text-dark">Features</h5>
+            <div className="flex flex-col gap-[10px] text-sm font-bold text-text">
               <Link to="/features/marketing">Business Marketing</Link>
               <Link to="/features/analytic">User Analytic</Link>
               <Link to="/features/chat">Live Chat</Link>
@@ -55,9 +58,9 @@ function Footer() {
           </div>
 
           {/* Resources */}
-          <div className="flex flex-col gap-4 md:flex-1">
-            <h4 className="text-base font-bold text-dark">Resources</h4>
-            <div className="flex flex-col gap-2 text-sm font-bold text-text">
+          <div className="flex flex-col gap-5 md:flex-1">
+            <h5 className="text-base font-bold text-dark">Resources</h5>
+            <div className="flex flex-col gap-[10px] text-sm font-bold text-text">
               <Link to="/resources/apps">IOS &amp; Android</Link>
               <Link to="/resources/demo">Watch a Demo</Link>
               <Link to="/resources/customers">Customers</Link>
@@ -66,20 +69,20 @@ function Footer() {
           </div>
 
           {/* Get In Touch */}
-          <div className="flex flex-col gap-4 md:flex-1">
-            <h4 className="text-base font-bold text-dark">Get In Touch</h4>
+          <div className="flex flex-col gap-5 md:flex-1">
+            <h5 className="text-base font-bold text-dark">Get In Touch</h5>
             <form
-              className="flex items-stretch"
+              className="flex items-stretch h-[58px]"
               onSubmit={(e) => e.preventDefault()}
             >
               <input
                 type="email"
                 placeholder="Your Email"
-                className="bg-input-bg border border-border rounded-l px-4 py-3 text-sm w-full outline-none"
+                className="bg-input-bg border border-border rounded-[5px] pl-5 text-sm w-full outline-none"
               />
               <button
                 type="submit"
-                className="bg-primary text-white text-sm font-bold px-4 py-3 rounded-r"
+                className="bg-primary text-white text-sm font-normal px-4 rounded-r-[5px] -ml-[5px]"
               >
                 Subscribe
               </button>
@@ -89,9 +92,9 @@ function Footer() {
         </div>
       </div>
 
-      {/* BÖLÜM 3 — ALT */}
+      {/* BÖLÜM 3 — ALT (Copyright) */}
       <div className="bg-light">
-        <div className="max-w-[1050px] mx-auto px-4 py-6">
+        <div className="max-w-[1050px] mx-auto px-4 py-[25px]">
           <p className="text-sm font-bold text-text">
             Made With Love By Finland All Right Reserved
           </p>
