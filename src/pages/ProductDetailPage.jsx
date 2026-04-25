@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
 import { ArrowLeft, Star, Heart, MoreHorizontal, ShoppingCart } from 'lucide-react'
 import axiosInstance from '../api/axiosInstance'
 import BestsellerProducts from '../components/BestsellerProducts'
 import Spinner from '../components/Spinner'
 import Breadcrumb from '../components/Breadcrumb'
+import { addToCart } from '../store/actions/cartActions'
 
 const FALLBACK_COLORS = ['#23A6F0', '#2DC071', '#E77C40', '#252B42']
 
@@ -29,12 +31,19 @@ function RatingStars({ rating = 0 }) {
 function ProductDetailPage() {
   const { productId, id, gender, categoryName, categoryId } = useParams()
   const history = useHistory()
+  const dispatch = useDispatch()
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true)
   const [activeImage, setActiveImage] = useState(0)
 
   const categories = useSelector((s) => s.product.categories)
   const realProductId = productId || id
+
+  const handleAddToCart = () => {
+    if (!product) return
+    dispatch(addToCart(product))
+    toast.success(`${product.name || product.title} sepete eklendi!`)
+  }
 
   useEffect(() => {
     if (!realProductId) {
@@ -172,8 +181,11 @@ function ProductDetailPage() {
             </div>
 
             <div className="flex items-center gap-[10px] mt-4">
-              <button className="bg-primary text-white text-sm font-bold px-5 py-[10px] rounded-[5px]">
-                Select Options
+              <button
+                onClick={handleAddToCart}
+                className="bg-primary text-white text-sm font-bold px-5 py-[10px] rounded-[5px] hover:opacity-90"
+              >
+                Sepete Ekle
               </button>
               <button
                 aria-label="Add to favorites"

@@ -7,6 +7,10 @@ import TeamPage from '../pages/TeamPage'
 import AboutPage from '../pages/AboutPage'
 import SignUpPage from '../pages/SignUpPage'
 import LoginPage from '../pages/LoginPage'
+import CartPage from '../pages/CartPage'
+import OrderPage from '../pages/OrderPage'
+import PreviousOrdersPage from '../pages/PreviousOrdersPage'
+import ProtectedRoute from '../components/ProtectedRoute'
 
 function PageContent() {
   return (
@@ -23,6 +27,9 @@ function PageContent() {
         />
         <Route path="/shop" component={ShopPage} />
         <Route path="/product/:id" component={ProductDetailPage} />
+        <Route path="/cart" component={CartPage} />
+        <ProtectedRoute path="/order" component={OrderPage} />
+        <ProtectedRoute path="/previous-orders" component={PreviousOrdersPage} />
         <Route path="/contact" component={ContactPage} />
         <Route path="/team" component={TeamPage} />
         <Route path="/about" component={AboutPage} />

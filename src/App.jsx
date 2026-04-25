@@ -4,6 +4,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { setUser, verifyToken } from './store/actions/clientActions'
 import { fetchCategories } from './store/actions/productActions'
+import { hydrateCart } from './store/actions/cartActions'
 import Header from './layout/Header'
 import PageContent from './layout/PageContent'
 import Footer from './layout/Footer'
@@ -19,6 +20,7 @@ function App() {
     } catch {
       /* ignore parse errors */
     }
+    dispatch(hydrateCart())
     dispatch(verifyToken())
     dispatch(fetchCategories())
   }, [dispatch])

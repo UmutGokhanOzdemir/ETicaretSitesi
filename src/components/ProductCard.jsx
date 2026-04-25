@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
+import { ShoppingCart } from 'lucide-react'
+import { addToCart } from '../store/actions/cartActions'
 import { slugify } from '../utils/slugify'
 
 const VARIANT_STYLES = {
@@ -28,6 +31,7 @@ const VARIANT_STYLES = {
 
 function ProductCard({ product, variant = 'home' }) {
   const v = VARIANT_STYLES[variant] || VARIANT_STYLES.home
+  const dispatch = useDispatch()
 
   // API ↔ mock field uyumu
   const title = product.name || product.title || ''
@@ -49,6 +53,13 @@ function ProductCard({ product, variant = 'home' }) {
   const productSlug = slugify(title)
 
   const detailLink = `/shop/${gender}/${categorySlug}/${categoryId}/${productSlug}/${productId}`
+
+  const handleAddToCart = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    dispatch(addToCart(product))
+    toast.success(`${title} sepete eklendi!`)
+  }
 
   return (
     <Link
@@ -87,6 +98,13 @@ function ProductCard({ product, variant = 'home' }) {
             ))}
           </div>
         )}
+
+        <button
+          onClick={handleAddToCart}
+          className="flex items-center gap-2 bg-primary text-white text-sm font-bold px-4 py-2 rounded-[5px] hover:opacity-90 mt-2"
+        >
+          <ShoppingCart size={16} /> Sepete Ekle
+        </button>
       </div>
     </Link>
   )

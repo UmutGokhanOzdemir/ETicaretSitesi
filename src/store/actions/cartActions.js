@@ -3,10 +3,39 @@ export const SET_CART = 'SET_CART'
 export const SET_PAYMENT = 'SET_PAYMENT'
 export const SET_ADDRESS = 'SET_ADDRESS'
 
+const CART_STORAGE_KEY = 'cart'
+
+// LocalStorage helpers
+export const loadCartFromStorage = () => {
+  try {
+    const raw = localStorage.getItem(CART_STORAGE_KEY)
+    return raw ? JSON.parse(raw) : []
+  } catch {
+    return []
+  }
+}
+
+const persistCart = (cart) => {
+  try {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart))
+  } catch {
+    /* ignore quota errors */
+  }
+}
+
 // Plain Action Creators
-export const setCart = (cart) => ({ type: SET_CART, payload: cart })
+export const setCart = (cart) => {
+  persistCart(cart)
+  return { type: SET_CART, payload: cart }
+}
 export const setPayment = (payment) => ({ type: SET_PAYMENT, payload: payment })
 export const setAddress = (address) => ({ type: SET_ADDRESS, payload: address })
+
+// Bootstrap thunk: localStorage'tan yükle
+export const hydrateCart = () => (dispatch) => {
+  const cart = loadCartFromStorage()
+  if (cart.length) dispatch(setCart(cart))
+}
 
 // Helper thunks
 export const addToCart = (product) => (dispatch, getState) => {

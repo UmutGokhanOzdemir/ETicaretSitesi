@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import Gravatar from 'react-gravatar'
 import {
@@ -13,19 +13,28 @@ import { slugify } from '../utils/slugify'
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isShopOpen, setIsShopOpen] = useState(false)
+  const [isCartOpen, setIsCartOpen] = useState(false)
+  const [isUserOpen, setIsUserOpen] = useState(false)
   const location = useLocation()
+  const history = useHistory()
   const dispatch = useDispatch()
 
   const user = useSelector((s) => s.client.user)
   const categories = useSelector((s) => s.product.categories)
+  const cart = useSelector((s) => s.shoppingCart.cart)
 
   const womenCategories = categories.filter((c) => c.gender === 'k')
   const menCategories = categories.filter((c) => c.gender === 'e')
+
+  const cartCount = cart.reduce((sum, item) => sum + item.count, 0)
 
   const handleLogout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
     dispatch(setUser({}))
+    setIsUserOpen(false)
+    setIsMenuOpen(false)
+    history.push('/')
   }
 
   const isShopOrDetail =
@@ -130,22 +139,41 @@ function Header() {
 
         <div className="hidden md:flex items-center gap-4 text-primary text-sm font-bold">
           {isLoggedIn ? (
-            <div className="flex items-center gap-2">
-              <Gravatar
-                email={user.email || ''}
-                size={30}
-                default="mp"
-                className="rounded-full"
-              />
-              <span className="text-primary font-bold text-sm">
-                {user.name || user.email}
-              </span>
-              <button
-                onClick={handleLogout}
-                className="text-text hover:text-dark"
-              >
-                Logout
+            <div
+              className="relative"
+              onMouseEnter={() => setIsUserOpen(true)}
+              onMouseLeave={() => setIsUserOpen(false)}
+            >
+              <button className="flex items-center gap-2">
+                <Gravatar
+                  email={user.email || ''}
+                  size={30}
+                  default="mp"
+                  className="rounded-full"
+                />
+                <span className="text-primary font-bold text-sm">
+                  {user.name || user.email}
+                </span>
+                <ChevronDown size={14} />
               </button>
+
+              {isUserOpen && (
+                <div className="absolute right-0 top-full bg-white shadow-lg flex flex-col min-w-[220px] z-50">
+                  <Link
+                    to="/previous-orders"
+                    className="px-4 py-3 hover:bg-light text-text"
+                    onClick={() => setIsUserOpen(false)}
+                  >
+                    Geçmiş Siparişlerim
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="px-4 py-3 hover:bg-light text-left text-text"
+                  >
+                    Çıkış Yap
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             <Link to="/login" className="flex items-center gap-1">
@@ -153,19 +181,84 @@ function Header() {
             </Link>
           )}
           <Search size={16} />
-          <span className="flex items-center gap-1">
-            <ShoppingCart size={16} />
-            <span className="text-xs font-normal">1</span>
-          </span>
-          <span className="flex items-center gap-1">
+
+          {/* Cart Dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={() => setIsCartOpen(true)}
+            onMouseLeave={() => setIsCartOpen(false)}
+          >
+            <Link to="/cart" className="flex items-center gap-1">
+              <ShoppingCart size={16} />
+              <span className="text-xs font-normal">{cartCount}</span>
+            </Link>
+
+            {isCartOpen && cart.length > 0 && (
+              <div className="absolute right-0 top-full bg-white shadow-lg p-4 min-w-[320px] flex flex-col gap-3 z-50">
+                <h5 className="font-bold text-dark">
+                  Sepetim ({cartCount} Ürün)
+                </h5>
+                <div className="flex flex-col gap-3 max-h-[300px] overflow-y-auto">
+                  {cart.slice(0, 5).map((item) => (
+                    <div
+                      key={item.product.id}
+                      className="flex gap-3 items-center border-b border-border pb-2"
+                    >
+                      <img
+                        src={
+                          item.product.images?.[0]?.url ||
+                          item.product.image ||
+                          'https://picsum.photos/seed/p/64/64'
+                        }
+                        alt={item.product.name || item.product.title}
+                        className="w-16 h-16 object-cover"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-bold text-dark truncate">
+                          {item.product.name || item.product.title}
+                        </p>
+                        <p className="text-xs text-text">Adet: {item.count}</p>
+                        <p className="text-sm text-secondary font-bold">
+                          ${Number(item.product.price ?? item.product.newPrice ?? 0).toFixed(2)}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex gap-2 mt-2">
+                  <Link
+                    to="/cart"
+                    onClick={() => setIsCartOpen(false)}
+                    className="flex-1 bg-primary text-white text-center py-2 rounded-[5px] text-sm font-bold"
+                  >
+                    Sepete Git
+                  </Link>
+                  <Link
+                    to="/order"
+                    onClick={() => setIsCartOpen(false)}
+                    className="flex-1 bg-success text-white text-center py-2 rounded-[5px] text-sm font-bold"
+                  >
+                    Siparişi Tamamla
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <Link to="/cart" className="flex items-center gap-1">
             <Heart size={16} />
             <span className="text-xs font-normal">1</span>
-          </span>
+          </Link>
         </div>
 
         <div className="flex md:hidden items-center gap-4 text-dark">
           <Search size={24} />
-          <ShoppingCart size={24} />
+          <Link to="/cart" className="flex items-center gap-1 text-dark">
+            <ShoppingCart size={24} />
+            {cartCount > 0 && (
+              <span className="text-xs font-bold text-primary">{cartCount}</span>
+            )}
+          </Link>
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
@@ -183,7 +276,9 @@ function Header() {
           <Link to="/about" onClick={() => setIsMenuOpen(false)}>About</Link>
           <Link to="/blog" onClick={() => setIsMenuOpen(false)}>Blog</Link>
           <Link to="/contact" onClick={() => setIsMenuOpen(false)}>Contact</Link>
-          <Link to="/pages" onClick={() => setIsMenuOpen(false)}>Pages</Link>
+          <Link to="/cart" onClick={() => setIsMenuOpen(false)}>
+            Cart {cartCount > 0 && `(${cartCount})`}
+          </Link>
 
           {/* Mobile categories */}
           {(womenCategories.length > 0 || menCategories.length > 0) && (
@@ -234,14 +329,18 @@ function Header() {
                   {user.name || user.email}
                 </span>
               </div>
-              <button
-                onClick={() => {
-                  handleLogout()
-                  setIsMenuOpen(false)
-                }}
+              <Link
+                to="/previous-orders"
+                onClick={() => setIsMenuOpen(false)}
                 className="text-base text-text"
               >
-                Logout
+                Geçmiş Siparişlerim
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="text-base text-text"
+              >
+                Çıkış Yap
               </button>
             </>
           ) : (
