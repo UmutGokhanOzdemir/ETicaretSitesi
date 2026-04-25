@@ -26,7 +26,7 @@ function BestsellerProducts({ limit = 4, variant = 'home', excludeId }) {
 
   return (
     <section className={`${isDetail ? 'bg-light' : 'bg-white'} py-20`}>
-      <div className="flex flex-col items-center gap-12 px-4 max-w-[1050px] mx-auto">
+      <div className="flex flex-col items-center gap-12 max-w-[1200px] mx-auto px-4 lg:px-8 w-full">
         <div
           className={`flex flex-col items-center gap-2 ${
             isDetail ? 'w-full' : 'text-center'
@@ -53,11 +53,11 @@ function BestsellerProducts({ limit = 4, variant = 'home', excludeId }) {
         )}
 
         {items.length > 0 && (
-          <div className="flex flex-col md:flex-row md:flex-wrap gap-8 w-full justify-center">
+          <div className="flex flex-wrap gap-[30px] w-full justify-start">
             {items.map((product) => (
               <div
                 key={product.id}
-                className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(25%-1.5rem)]"
+                className="w-full sm:w-[calc(50%-15px)] lg:w-[calc(25%-22.5px)]"
               >
                 <ProductCard product={product} variant={variant} />
               </div>

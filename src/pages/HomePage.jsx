@@ -10,7 +10,8 @@ import BestsellerProducts from '../components/BestsellerProducts'
 import { slugify } from '../utils/slugify'
 
 const FALLBACK_PICKS = [
-  { title: 'MEN', image: 'https://images.unsplash.com/photo-1516257984-b1b4d707412e?w=600&q=80' },
+  { title: 'CLOTHS', image: 'https://images.unsplash.com/photo-1516257984-b1b4d707412e?w=600&q=80' },
+  { title: 'MEN', image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&q=80' },
   { title: 'WOMEN', image: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=400&q=80' },
   { title: 'ACCESSORIES', image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400&q=80' },
   { title: 'KIDS', image: 'https://images.unsplash.com/photo-1503944583220-79d8926ad5e2?w=400&q=80' }
@@ -49,8 +50,8 @@ function HomePage() {
     .sort((a, b) => (b.rating || 0) - (a.rating || 0))
     .slice(0, 5)
 
-  const picks = topCategories.length >= 4
-    ? topCategories.slice(0, 4).map((c) => ({
+  const picks = topCategories.length >= 5
+    ? topCategories.slice(0, 5).map((c) => ({
         title: (c.title || c.code || '').toUpperCase(),
         image: c.img || c.image,
         gender: c.gender,
@@ -108,8 +109,8 @@ function HomePage() {
       </section>
 
       {/* EDITOR'S PICK */}
-      <section className="bg-light py-20 max-w-[1050px] mx-auto px-4">
-        <div className="flex flex-col items-center gap-12">
+      <section className="bg-light py-20">
+        <div className="flex flex-col items-center gap-12 max-w-[1200px] mx-auto px-4 lg:px-8 w-full">
 
           {/* Başlık */}
           <div className="flex flex-col items-center gap-2 text-center">
@@ -119,12 +120,12 @@ function HomePage() {
             </p>
           </div>
 
-          {/* Kartlar grid */}
-          <div className="flex flex-col md:flex-row gap-8 w-full">
-            {/* Büyük kart */}
+          {/* Kartlar grid: 1 büyük (sol) + 4 küçük (sağ 2x2) */}
+          <div className="flex flex-col lg:flex-row gap-[30px] w-full">
+            {/* Sol: Büyük kart */}
             <Link
               to={linkFor(picks[0])}
-              className="relative h-[500px] md:flex-[2] bg-cover bg-center group cursor-pointer overflow-hidden"
+              className="relative h-[500px] lg:flex-1 bg-cover bg-center group cursor-pointer overflow-hidden"
               style={{ backgroundImage: `url('${picks[0].image}')` }}
             >
               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors"></div>
@@ -133,41 +134,21 @@ function HomePage() {
               </div>
             </Link>
 
-            {/* Orta */}
-            <Link
-              to={linkFor(picks[1])}
-              className="relative h-[500px] md:flex-1 bg-cover bg-center group cursor-pointer overflow-hidden"
-              style={{ backgroundImage: `url('${picks[1].image}')` }}
-            >
-              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors"></div>
-              <div className="absolute bottom-5 left-1/2 -translate-x-1/2 bg-white px-10 py-3">
-                <h3 className="text-dark font-bold text-base">{picks[1].title}</h3>
-              </div>
-            </Link>
-
-            {/* Sağ: 2 küçük kart */}
-            <div className="flex flex-col gap-4 md:flex-1">
-              <Link
-                to={linkFor(picks[2])}
-                className="relative h-[242px] bg-cover bg-center group cursor-pointer overflow-hidden"
-                style={{ backgroundImage: `url('${picks[2].image}')` }}
-              >
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors"></div>
-                <div className="absolute bottom-5 left-4 bg-white px-6 py-3">
-                  <h3 className="text-dark font-bold text-base">{picks[2].title}</h3>
-                </div>
-              </Link>
-
-              <Link
-                to={linkFor(picks[3])}
-                className="relative h-[242px] bg-cover bg-center group cursor-pointer overflow-hidden"
-                style={{ backgroundImage: `url('${picks[3].image}')` }}
-              >
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors"></div>
-                <div className="absolute bottom-5 left-8 bg-white px-10 py-3">
-                  <h3 className="text-dark font-bold text-base">{picks[3].title}</h3>
-                </div>
-              </Link>
+            {/* Sağ: 4 küçük kart 2x2 (flex-wrap) */}
+            <div className="flex flex-wrap gap-[30px] lg:flex-1">
+              {[1, 2, 3, 4].map((i) => (
+                <Link
+                  key={i}
+                  to={linkFor(picks[i])}
+                  className="relative h-[242px] w-full sm:w-[calc(50%-15px)] bg-cover bg-center group cursor-pointer overflow-hidden"
+                  style={{ backgroundImage: `url('${picks[i].image}')` }}
+                >
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors"></div>
+                  <div className="absolute bottom-5 left-5 bg-white px-6 py-3">
+                    <h3 className="text-dark font-bold text-base">{picks[i].title}</h3>
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
 
@@ -178,8 +159,8 @@ function HomePage() {
       <BestsellerProducts limit={8} />
 
       {/* VITA CLASSIC — yeşil promotional section */}
-      <section className="bg-secondary max-w-[1050px] mx-auto my-12 px-4">
-        <div className="flex flex-col md:flex-row items-center justify-between py-16 md:py-28 gap-8 px-4 md:px-8">
+      <section className="bg-secondary my-12">
+        <div className="flex flex-col md:flex-row items-center justify-between max-w-[1200px] mx-auto px-4 lg:px-8 py-16 md:py-28 gap-8">
           {/* Sol: Metin */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left gap-6 md:gap-8 max-w-[500px]">
             <h4 className="text-white text-xl font-normal">SUMMER 2020</h4>
@@ -209,8 +190,8 @@ function HomePage() {
       </section>
 
       {/* CONTAINER-FLUID — Part of the Neural Universe */}
-      <section className="bg-white max-w-[1050px] mx-auto px-4 my-12">
-        <div className="flex flex-col md:flex-row w-full">
+      <section className="bg-white my-12">
+        <div className="flex flex-col md:flex-row w-full max-w-[1200px] mx-auto">
           {/* Sol: Kadın fotoğrafı */}
           <div
             className="w-full md:w-1/2 h-[400px] md:h-[682px] bg-cover bg-center"
@@ -241,8 +222,8 @@ function HomePage() {
       </section>
 
       {/* FEATURED POSTS */}
-      <section className="bg-white py-28 max-w-[1050px] mx-auto px-4">
-        <div className="flex flex-col items-center gap-12">
+      <section className="bg-white py-28">
+        <div className="flex flex-col items-center gap-12 max-w-[1200px] mx-auto px-4 lg:px-8 w-full">
           <div className="flex flex-col items-center gap-4 text-center">
             <p className="text-sm text-primary font-bold">Practice Advice</p>
             <h2 className="text-3xl md:text-5xl font-bold text-dark">Featured Posts</h2>
