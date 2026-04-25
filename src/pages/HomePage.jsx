@@ -210,9 +210,12 @@ function HomePage() {
               We know how large objects will act, but things on a small scale.
             </p>
             <div className="flex items-center gap-[10px]">
-              <button className="bg-success hover:opacity-90 text-white text-sm font-bold px-[40px] py-[15px] rounded-[5px]">
+              <Link
+                to="/shop"
+                className="bg-success hover:opacity-90 text-white text-sm font-bold px-[40px] py-[15px] rounded-[5px]"
+              >
                 BUY NOW
-              </button>
+              </Link>
               <button className="border border-success text-success hover:bg-success hover:text-white transition-colors text-sm font-bold px-[40px] py-[15px] rounded-[5px]">
                 READ MORE
               </button>
