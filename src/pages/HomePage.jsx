@@ -1,7 +1,9 @@
+import { useRef } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination, Autoplay } from 'swiper/modules'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
@@ -45,6 +47,7 @@ const posts = [
 ]
 
 function HomePage() {
+  const swiperRef = useRef(null)
   const categories = useSelector((s) => s.product.categories)
   const topCategories = [...categories]
     .sort((a, b) => (b.rating || 0) - (a.rating || 0))
@@ -71,8 +74,8 @@ function HomePage() {
       <section className="relative">
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
-          navigation
           pagination={{ clickable: true }}
+          onSwiper={(s) => (swiperRef.current = s)}
           className="hero-swiper"
         >
           {/* SLIDE 1 */}
@@ -106,6 +109,22 @@ function HomePage() {
           </SwiperSlide>
 
         </Swiper>
+
+        {/* Manual chevron navigation */}
+        <button
+          onClick={() => swiperRef.current?.slidePrev()}
+          aria-label="Önceki slide"
+          className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-12 h-12 text-white opacity-70 hover:opacity-100 transition-opacity"
+        >
+          <ChevronLeft size={48} strokeWidth={1.5} />
+        </button>
+        <button
+          onClick={() => swiperRef.current?.slideNext()}
+          aria-label="Sonraki slide"
+          className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-12 h-12 text-white opacity-70 hover:opacity-100 transition-opacity"
+        >
+          <ChevronRight size={48} strokeWidth={1.5} />
+        </button>
       </section>
 
       {/* EDITOR'S PICK */}

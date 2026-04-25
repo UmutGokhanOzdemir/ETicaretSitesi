@@ -26,7 +26,7 @@ function BestsellerProducts({ limit = 4, variant = 'home', excludeId }) {
 
   return (
     <section className={`${isDetail ? 'bg-light' : 'bg-white'} py-20`}>
-      <div className="flex flex-col items-center gap-12 max-w-[1200px] mx-auto px-4 lg:px-8 w-full">
+      <div className="flex flex-col items-center gap-12 max-w-[1050px] mx-auto px-4 w-full">
         <div
           className={`flex flex-col items-center gap-2 ${
             isDetail ? 'w-full' : 'text-center'
