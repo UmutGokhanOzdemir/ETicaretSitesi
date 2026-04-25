@@ -108,8 +108,8 @@ function HomePage() {
       </section>
 
       {/* EDITOR'S PICK */}
-      <section className="bg-light py-20">
-        <div className="flex flex-col items-center gap-12 px-4 max-w-[1050px] mx-auto">
+      <section className="bg-light py-20 max-w-[1050px] mx-auto px-4">
+        <div className="flex flex-col items-center gap-12">
 
           {/* Başlık */}
           <div className="flex flex-col items-center gap-2 text-center">
@@ -178,8 +178,8 @@ function HomePage() {
       <BestsellerProducts limit={8} />
 
       {/* VITA CLASSIC — yeşil promotional section */}
-      <section className="bg-secondary">
-        <div className="flex flex-col md:flex-row items-center justify-between max-w-[1050px] mx-auto px-4 md:px-8 py-16 md:py-28 gap-8">
+      <section className="bg-secondary max-w-[1050px] mx-auto my-12 px-4">
+        <div className="flex flex-col md:flex-row items-center justify-between py-16 md:py-28 gap-8 px-4 md:px-8">
           {/* Sol: Metin */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left gap-6 md:gap-8 max-w-[500px]">
             <h4 className="text-white text-xl font-normal">SUMMER 2020</h4>
@@ -209,7 +209,7 @@ function HomePage() {
       </section>
 
       {/* CONTAINER-FLUID — Part of the Neural Universe */}
-      <section className="bg-white">
+      <section className="bg-white max-w-[1050px] mx-auto px-4 my-12">
         <div className="flex flex-col md:flex-row w-full">
           {/* Sol: Kadın fotoğrafı */}
           <div
@@ -241,8 +241,8 @@ function HomePage() {
       </section>
 
       {/* FEATURED POSTS */}
-      <section className="bg-white py-28">
-        <div className="flex flex-col items-center gap-12 px-4 max-w-[1050px] mx-auto">
+      <section className="bg-white py-28 max-w-[1050px] mx-auto px-4">
+        <div className="flex flex-col items-center gap-12">
           <div className="flex flex-col items-center gap-4 text-center">
             <p className="text-sm text-primary font-bold">Practice Advice</p>
             <h2 className="text-3xl md:text-5xl font-bold text-dark">Featured Posts</h2>
